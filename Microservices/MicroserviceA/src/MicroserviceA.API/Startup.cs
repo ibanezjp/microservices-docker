@@ -28,7 +28,7 @@ namespace MicroserviceA.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SitusAMC-Certainty Services", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Microservices Sample", Version = "v1" });
             });
         }
 
@@ -55,7 +55,7 @@ namespace MicroserviceA.API
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SitusAMC-Certainty Services");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Microservices Sample");
             });
         }
     }
