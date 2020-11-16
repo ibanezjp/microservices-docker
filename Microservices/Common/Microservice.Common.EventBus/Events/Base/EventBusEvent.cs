@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Microservice.Common.EventBus.Events
+namespace Microservice.Common.EventBus.Events.Base
 {
     public abstract class EventBusEvent
     {

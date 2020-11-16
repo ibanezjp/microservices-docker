@@ -9,7 +9,15 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
+using MediatR;
+using Microservice.Common.EventBus;
+using Microservice.Common.EventBus.Events;
+using Microservice.Common.Interfaces;
+using Microservice.Common.EventBus.RabbitMQ;
+using MicroserviceB.Business;
+using MicroservicesB.Application;
 
 namespace MicroserviceB.API
 {
@@ -25,7 +33,13 @@ namespace MicroserviceB.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IEventBus, RabbitMQEventBus>();
+
+            services.AddTransient<IEventBusHandler<LongProcessEvent>, LongProcessEventHandler>();
+
             services.AddControllers();
+
+            services.AddMediatR(typeof(Register));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +60,9 @@ namespace MicroserviceB.API
             {
                 endpoints.MapControllers();
             });
+
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<LongProcessEvent, LongProcessEventHandler>();
         }
     }
 }

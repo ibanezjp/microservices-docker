@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microservice.Common.EventBus.Events;
 using Microservice.Common.Interfaces;
 using MicroserviceA.Application.Requests;
-using MicroserviceA.Business.Events;
 
 namespace MicroserviceA.Application.RequestHandlers
 {

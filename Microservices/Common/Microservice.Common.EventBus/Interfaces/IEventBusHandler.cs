@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Microservice.Common.EventBus.Events;
+using Microservice.Common.EventBus.Events.Base;
 
 namespace Microservice.Common.EventBus
 {
