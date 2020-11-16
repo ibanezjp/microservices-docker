@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -25,6 +26,12 @@ namespace MicroserviceA.API.Controllers
         public async Task<IEnumerable<WeatherForecastDTO>> Get()
         {
             return await mediator.Send(new WeatherForecastRequest());
+        }
+
+        [HttpPost]
+        public async Task<Guid> PostAPostProcess()
+        {
+            return await mediator.Send(new WeatherForecastLongProcessRequest());
         }
     }
 }

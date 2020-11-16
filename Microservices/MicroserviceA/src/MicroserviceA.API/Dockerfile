@@ -7,10 +7,14 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
-COPY ["MicroserviceA.API/MicroserviceA.API.csproj", "MicroserviceA.API/"]
-RUN dotnet restore "MicroserviceA.API/MicroserviceA.API.csproj"
+COPY ["Microservices/MicroserviceA/src/MicroserviceA.API/MicroserviceA.API.csproj", "Microservices/MicroserviceA/src/MicroserviceA.API/"]
+COPY ["Microservices/MicroserviceA/src/MicroserviceA.Application/MicroserviceA.Application.csproj", "Microservices/MicroserviceA/src/MicroserviceA.Application/"]
+COPY ["Microservices/Common/Microservice.Common.EventBus/Microservice.Common.EventBus.csproj", "Microservices/Common/Microservice.Common.EventBus/"]
+COPY ["Microservices/MicroserviceA/src/MicroserviceA.Business/MicroserviceA.Business.csproj", "Microservices/MicroserviceA/src/MicroserviceA.Business/"]
+COPY ["Microservices/Common/Microservice.Common.EventBus.RabbitMQ/Microservice.Common.EventBus.RabbitMQ.csproj", "Microservices/Common/Microservice.Common.EventBus.RabbitMQ/"]
+RUN dotnet restore "Microservices/MicroserviceA/src/MicroserviceA.API/MicroserviceA.API.csproj"
 COPY . .
-WORKDIR "/src/MicroserviceA.API"
+WORKDIR "/src/Microservices/MicroserviceA/src/MicroserviceA.API"
 RUN dotnet build "MicroserviceA.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
