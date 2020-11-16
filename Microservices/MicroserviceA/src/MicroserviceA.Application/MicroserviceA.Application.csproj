@@ -8,4 +8,9 @@
     <PackageReference Include="MediatR" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Microservice.Common.EventBus\Microservice.Common.EventBus.csproj" />
+    <ProjectReference Include="..\MicroserviceA.Business\MicroserviceA.Business.csproj" />
+  </ItemGroup>
+
 </Project>

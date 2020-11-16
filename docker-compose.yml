@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  microservicea.api:
+    image: ${DOCKER_REGISTRY-}microserviceaapi
+    build:
+      context: .
+      dockerfile: Microservices/MicroserviceA/src/MicroserviceA.API/Dockerfile
+
+  microserviceb.api:
+    image: ${DOCKER_REGISTRY-}microservicebapi
+    build:
+      context: .
+      dockerfile: Microservices/MicroserviceB/src/MicroserviceB.API/Dockerfile
+
+networks:
+  default:
+    external:
+      name: microservicesnet
