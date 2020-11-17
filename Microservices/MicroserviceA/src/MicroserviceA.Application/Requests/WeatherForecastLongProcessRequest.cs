@@ -5,7 +5,8 @@ using MediatR;
 
 namespace MicroserviceA.Application.Requests
 {
-    public class WeatherForecastLongProcessRequest : IRequest<Guid>
+    public class RabbitMQAddRequest : IRequest<Guid>
     {
+        public string Message { get; set; }
     }
 }
