@@ -30,7 +30,7 @@ namespace Microservice.Common.EventBus.RabbitMQ
             {
                 var eventName = eventBusEvent.GetType().Name;
 
-                channel.QueueDeclare(eventName, false, false, false, null);
+                channel.QueueDeclare(eventName, true, false, false, null);
 
                 var message = JsonConvert.SerializeObject(eventBusEvent);
                 var body = Encoding.UTF8.GetBytes(message);
@@ -70,7 +70,7 @@ namespace Microservice.Common.EventBus.RabbitMQ
             var channel = connection.CreateModel();
 
 
-            channel.QueueDeclare(eventName, false, false, false, null);
+            channel.QueueDeclare(eventName, true, false, false, null);
 
             var asyncEventingBasicConsumer = new AsyncEventingBasicConsumer(channel);
             asyncEventingBasicConsumer.Received += AsyncEventingBasicConsumer_Received; ;
@@ -100,12 +100,12 @@ namespace Microservice.Common.EventBus.RabbitMQ
                         var type = typeof(IEventBusHandler<>).MakeGenericType(eventType);
 
                         await(Task)type.GetMethod("Handle").Invoke(handler, new[] { eventBusEvent });
-
                     }
                 }
             }
             catch (Exception ex)
             {
+
             }
         }
     }

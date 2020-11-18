@@ -4,11 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MassTransit;
-using MediatR;
-using MicroserviceB.Application.Consumers;
-using MicroservicesB.Application;
+using MicroserviceC.Application.Consumers;
 
-namespace MicroserviceB.API
+namespace MicroserviceC.API
 {
     public class Startup
     {
@@ -31,10 +29,17 @@ namespace MicroserviceB.API
                 {
                     cfg.Host("rabbitmq-server-web");
 
-                    cfg.ReceiveEndpoint("MicroserviceB_SimpleMessage_Queue", receiveEndpointConfiguration =>
+                    cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue",receiveEndpointConfiguration =>
                     {
                         receiveEndpointConfiguration.AutoDelete = false;
                         receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context);
+                        //receiveEndpointConfiguration.UseMessageRetry(x =>
+                        //    x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(5)));
+                        //receiveEndpointConfiguration.UseScheduledRedelivery(r =>
+                        //    r.Intervals(
+                        //        TimeSpan.FromMinutes(5),
+                        //        TimeSpan.FromMinutes(15),
+                        //        TimeSpan.FromMinutes(30)));
                     });
 
                     //cfg.ReceiveEndpoint("LongProcessEvent_error", e =>
@@ -44,11 +49,16 @@ namespace MicroserviceB.API
                 });
             });
 
+            //services.Configure<HealthCheckPublisherOptions>(options =>
+            //{
+            //    options.Delay = TimeSpan.FromSeconds(2);
+            //    options.Predicate = (check) => check.Tags.Contains("ready");
+            //});
+
+
             services.AddMassTransitHostedService();
 
             services.AddControllers();
-
-            services.AddMediatR(typeof(Register));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,7 +78,35 @@ namespace MicroserviceB.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                //endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions()
+                //{
+                //    Predicate = (check) => check.Tags.Contains("ready"),
+                //});
+
+                //endpoints.MapHealthChecks("/health/live", new HealthCheckOptions());
+
             });
         }
+
+        //public interface Fault<T>
+        //    where T : class
+        //{
+        //    Guid FaultId { get; }
+        //    Guid? FaultedMessageId { get; }
+        //    DateTime Timestamp { get; }
+        //    ExceptionInfo[] Exceptions { get; }
+        //    HostInfo Host { get; }
+        //    T Message { get; }
+        //}
+
+        //public class DashboardFaultConsumer :
+        //    IConsumer<Fault<LongProcessEvent>>
+        //{
+        //    public async Task Consume(ConsumeContext<Fault<LongProcessEvent>> context)
+        //    {
+        //        // update the dashboard
+        //    }
+        //}
     }
 }

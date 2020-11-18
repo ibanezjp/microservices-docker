@@ -1,25 +1,31 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MassTransit;
 using MediatR;
-using Microservice.Common.EventBus.Events;
-using Microservice.Common.Interfaces;
 using MicroserviceA.Application.Requests;
+using MicroserviceA.Business;
 
 namespace MicroserviceA.Application.RequestHandlers
 {
     public class WeatherForecastLongProcessRequestHandler : IRequestHandler<WeatherForecastLongProcessRequest, Guid>
     {
-        private IEventBus eventBus;
-        public WeatherForecastLongProcessRequestHandler(IEventBus eventBus)
+        private readonly IPublishEndpoint publishEndpoint;
+
+        public WeatherForecastLongProcessRequestHandler(IPublishEndpoint publishEndpoint)
         {
-            this.eventBus = eventBus;
+            this.publishEndpoint = publishEndpoint;
         }
 
-        public Task<Guid> Handle(WeatherForecastLongProcessRequest request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(WeatherForecastLongProcessRequest request, CancellationToken cancellationToken)
         {
-            eventBus.Publish(new LongProcessEvent());
-            return Task.FromResult(Guid.Empty);
+            var simpleMessage = new SimpleMessage
+            {
+                Message = "Message published from Microservice A"
+            };
+            await publishEndpoint.Publish(simpleMessage, cancellationToken);
+
+            return Guid.Empty;
         }
     }
 }

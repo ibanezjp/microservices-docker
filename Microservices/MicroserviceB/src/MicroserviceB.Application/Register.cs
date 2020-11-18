@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MicroservicesB.Application
+﻿namespace MicroservicesB.Application
 {
     public class Register
     {

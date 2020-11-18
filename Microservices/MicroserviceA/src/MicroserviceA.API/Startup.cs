@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -5,8 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MediatR;
 using Microsoft.OpenApi.Models;
-using Microservice.Common.EventBus.RabbitMQ;
-using Microservice.Common.Interfaces;
 
 namespace MicroserviceA.API
 {
@@ -22,7 +21,16 @@ namespace MicroserviceA.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IEventBus, RabbitMQEventBus>();
+            services.AddMassTransit(x =>
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host("rabbitmq-server-web");
+                });
+            });
+
+            services.AddMassTransitHostedService();
+
             services.AddControllers();
             services.AddMediatR(typeof(Application.Register));
 
