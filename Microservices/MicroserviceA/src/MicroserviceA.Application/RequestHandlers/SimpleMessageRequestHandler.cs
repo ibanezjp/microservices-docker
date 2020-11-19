@@ -8,24 +8,24 @@ using MicroserviceA.Business;
 
 namespace MicroserviceA.Application.RequestHandlers
 {
-    public class WeatherForecastLongProcessRequestHandler : IRequestHandler<WeatherForecastLongProcessRequest, Guid>
+    public class SimpleMessageRequestHandler : IRequestHandler<SimpleMessageRequest, Unit>
     {
         private readonly IPublishEndpoint publishEndpoint;
 
-        public WeatherForecastLongProcessRequestHandler(IPublishEndpoint publishEndpoint)
+        public SimpleMessageRequestHandler(IPublishEndpoint publishEndpoint)
         {
             this.publishEndpoint = publishEndpoint;
         }
 
-        public async Task<Guid> Handle(WeatherForecastLongProcessRequest request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SimpleMessageRequest simpleMessageRequest, CancellationToken cancellationToken)
         {
             var simpleMessage = new SimpleMessage
             {
-                Message = "Message published from Microservice A"
+                Message = simpleMessageRequest.Message
             };
             await publishEndpoint.Publish(simpleMessage, cancellationToken);
 
-            return Guid.Empty;
+            return Unit.Value;
         }
     }
 }

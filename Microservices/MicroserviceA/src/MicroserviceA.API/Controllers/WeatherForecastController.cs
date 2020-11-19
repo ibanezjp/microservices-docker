@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using MicroserviceA.Application.DTOs;
 using MicroserviceA.Application.Requests;
+using MicroserviceA.Business;
 
 namespace MicroserviceA.API.Controllers
 {
@@ -29,9 +30,11 @@ namespace MicroserviceA.API.Controllers
         }
 
         [HttpPost]
-        public async Task<Guid> PostAPostProcess()
+        public async Task<IActionResult> Post([FromBody] SimpleMessageRequest simpleMessageRequest)
         {
-            return await mediator.Send(new WeatherForecastLongProcessRequest());
+            await mediator.Send(simpleMessageRequest);
+
+            return Ok();
         }
     }
 }

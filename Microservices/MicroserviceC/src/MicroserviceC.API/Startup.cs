@@ -1,3 +1,5 @@
+using System;
+using GreenPipes;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +25,7 @@ namespace MicroserviceC.API
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<SimpleMessageConsumer>();
-                //x.AddConsumer<DashboardFaultConsumer>();
+                x.AddConsumer<FaultSimpleMessageConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -31,30 +33,26 @@ namespace MicroserviceC.API
 
                     cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue",receiveEndpointConfiguration =>
                     {
+                        receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context); 
+                        receiveEndpointConfiguration.ConfigureConsumer<FaultSimpleMessageConsumer>(context);
+
                         receiveEndpointConfiguration.AutoDelete = false;
-                        receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context);
-                        //receiveEndpointConfiguration.UseMessageRetry(x =>
-                        //    x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(5)));
-                        //receiveEndpointConfiguration.UseScheduledRedelivery(r =>
-                        //    r.Intervals(
-                        //        TimeSpan.FromMinutes(5),
-                        //        TimeSpan.FromMinutes(15),
-                        //        TimeSpan.FromMinutes(30)));
+
+                        receiveEndpointConfiguration.UseMessageRetry(x =>
+                            x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
                     });
 
-                    //cfg.ReceiveEndpoint("LongProcessEvent_error", e =>
+                    //cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue_error", receiveEndpointConfiguration =>
                     //{
-                    //    e.ConfigureConsumer<DashboardFaultConsumer>(context);
+
+
+                    //    receiveEndpointConfiguration.AutoDelete = false;
+
+                    //    receiveEndpointConfiguration.UseMessageRetry(x =>
+                    //        x.Incremental(2, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
                     //});
                 });
             });
-
-            //services.Configure<HealthCheckPublisherOptions>(options =>
-            //{
-            //    options.Delay = TimeSpan.FromSeconds(2);
-            //    options.Predicate = (check) => check.Tags.Contains("ready");
-            //});
-
 
             services.AddMassTransitHostedService();
 
@@ -78,35 +76,7 @@ namespace MicroserviceC.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-
-                //endpoints.MapHealthChecks("/health/ready", new HealthCheckOptions()
-                //{
-                //    Predicate = (check) => check.Tags.Contains("ready"),
-                //});
-
-                //endpoints.MapHealthChecks("/health/live", new HealthCheckOptions());
-
             });
         }
-
-        //public interface Fault<T>
-        //    where T : class
-        //{
-        //    Guid FaultId { get; }
-        //    Guid? FaultedMessageId { get; }
-        //    DateTime Timestamp { get; }
-        //    ExceptionInfo[] Exceptions { get; }
-        //    HostInfo Host { get; }
-        //    T Message { get; }
-        //}
-
-        //public class DashboardFaultConsumer :
-        //    IConsumer<Fault<LongProcessEvent>>
-        //{
-        //    public async Task Consume(ConsumeContext<Fault<LongProcessEvent>> context)
-        //    {
-        //        // update the dashboard
-        //    }
-        //}
     }
 }
