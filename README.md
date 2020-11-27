@@ -7,3 +7,4 @@ Run docker command:
 4) docker network connect microservicesnet rabbitmq-server
 5) docker network connect microservicesnet rabbitmq-server-web
 6) docker run --name redis-server -d redis:alpine redis-server --appendonly yes
+7) docker network connect microservicesnet redis-server
