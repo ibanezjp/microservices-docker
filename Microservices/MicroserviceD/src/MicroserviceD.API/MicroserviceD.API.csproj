@@ -1,26 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>3d4e58b0-cc94-4b42-b761-2fbc36a2b154</UserSecretsId>
+    <UserSecretsId>fcdbeb74-5358-4df2-bbe0-cc7684ad392e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..\..</DockerfileContext>
     <DockerComposeProjectPath>..\..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit.Analyzers" Version="7.0.7" />
     <PackageReference Include="MassTransit.AspNetCore" Version="7.0.7" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="7.0.7" />
+    <PackageReference Include="MassTransit.Redis" Version="7.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Microservice.Common.EventBus\Microservice.Common.EventBus.csproj" />
-    <ProjectReference Include="..\MicroserviceC.Application\MicroserviceC.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\MicroserviceD.Application\MicroserviceD.Application.csproj" />
+    <ProjectReference Include="..\MicroserviceD.Business\MicroserviceD.Business.csproj" />
   </ItemGroup>
 
 

@@ -26,6 +26,7 @@ namespace MicroserviceC.API
             {
                 x.AddConsumer<SimpleMessageConsumer>();
                 x.AddConsumer<FaultSimpleMessageConsumer>();
+                x.AddConsumer<OrderValidationConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -42,15 +43,10 @@ namespace MicroserviceC.API
                             x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
                     });
 
-                    //cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue_error", receiveEndpointConfiguration =>
-                    //{
-
-
-                    //    receiveEndpointConfiguration.AutoDelete = false;
-
-                    //    receiveEndpointConfiguration.UseMessageRetry(x =>
-                    //        x.Incremental(2, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
-                    //});
+                    cfg.ReceiveEndpoint("order-validation", receiveEndpointConfiguration =>
+                    {
+                        receiveEndpointConfiguration.ConfigureConsumer<OrderValidationConsumer>(context);
+                    });
                 });
             });
 

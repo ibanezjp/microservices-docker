@@ -51,9 +51,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{38C435E7-F13
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CE8A5166-10AA-40B7-9123-F289BBBB7459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceC.API", "Microservices\MicroserviceC\src\MicroserviceC.API\MicroserviceC.API.csproj", "{C58A7CDC-6371-4569-8BD3-CB2FD962F2A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroserviceC.API", "Microservices\MicroserviceC\src\MicroserviceC.API\MicroserviceC.API.csproj", "{C58A7CDC-6371-4569-8BD3-CB2FD962F2A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceC.Application", "Microservices\MicroserviceC\src\MicroserviceC.Application\MicroserviceC.Application.csproj", "{AE085B3A-F8BB-4734-B962-7F8C9AC8EFCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroserviceC.Application", "Microservices\MicroserviceC\src\MicroserviceC.Application\MicroserviceC.Application.csproj", "{AE085B3A-F8BB-4734-B962-7F8C9AC8EFCF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MicroserviceD", "MicroserviceD", "{45F0AAA8-5CF2-4837-BFC8-9E895AAED40C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AE7D1CA6-6653-4868-89CA-D68BA6379955}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{51EF23F6-0338-40FF-80FA-78A9E132BA0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceD.API", "Microservices\MicroserviceD\src\MicroserviceD.API\MicroserviceD.API.csproj", "{14E4A4CD-707C-4992-9D60-C80E4BDD1073}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceD.Application", "Microservices\MicroserviceD\src\MicroserviceD.Application\MicroserviceD.Application.csproj", "{0B815526-E9B8-43EA-80EF-C58FF2D68F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroserviceD.Business", "Microservices\MicroserviceD\src\MicroserviceD.Business\MicroserviceD.Business.csproj", "{E024BA03-8746-48CB-A34E-0D935D904DBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +129,18 @@ Global
 		{AE085B3A-F8BB-4734-B962-7F8C9AC8EFCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE085B3A-F8BB-4734-B962-7F8C9AC8EFCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE085B3A-F8BB-4734-B962-7F8C9AC8EFCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14E4A4CD-707C-4992-9D60-C80E4BDD1073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14E4A4CD-707C-4992-9D60-C80E4BDD1073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14E4A4CD-707C-4992-9D60-C80E4BDD1073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14E4A4CD-707C-4992-9D60-C80E4BDD1073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B815526-E9B8-43EA-80EF-C58FF2D68F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B815526-E9B8-43EA-80EF-C58FF2D68F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B815526-E9B8-43EA-80EF-C58FF2D68F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B815526-E9B8-43EA-80EF-C58FF2D68F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E024BA03-8746-48CB-A34E-0D935D904DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E024BA03-8746-48CB-A34E-0D935D904DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E024BA03-8746-48CB-A34E-0D935D904DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E024BA03-8746-48CB-A34E-0D935D904DBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -143,6 +167,11 @@ Global
 		{CE8A5166-10AA-40B7-9123-F289BBBB7459} = {F95BE12D-ACB0-45A3-8477-83E817ADE0A5}
 		{C58A7CDC-6371-4569-8BD3-CB2FD962F2A2} = {38C435E7-F13C-4629-B77B-9D83A73FAE0B}
 		{AE085B3A-F8BB-4734-B962-7F8C9AC8EFCF} = {38C435E7-F13C-4629-B77B-9D83A73FAE0B}
+		{AE7D1CA6-6653-4868-89CA-D68BA6379955} = {45F0AAA8-5CF2-4837-BFC8-9E895AAED40C}
+		{51EF23F6-0338-40FF-80FA-78A9E132BA0F} = {45F0AAA8-5CF2-4837-BFC8-9E895AAED40C}
+		{14E4A4CD-707C-4992-9D60-C80E4BDD1073} = {AE7D1CA6-6653-4868-89CA-D68BA6379955}
+		{0B815526-E9B8-43EA-80EF-C58FF2D68F16} = {AE7D1CA6-6653-4868-89CA-D68BA6379955}
+		{E024BA03-8746-48CB-A34E-0D935D904DBF} = {AE7D1CA6-6653-4868-89CA-D68BA6379955}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {892CF0CA-28DA-4582-8956-C68EED0FB654}

@@ -37,8 +37,15 @@ services:
         - "ASPNETCORE_URLS=https://+;http://+"
     restart: always
 
+  microserviced.api:
+    image: ${DOCKER_REGISTRY-}microservicedapi
+    build:
+      context: .
+      dockerfile: Microservices/MicroserviceD/src/MicroserviceD.API/Dockerfile
+
 networks:
   default:
     external:
       name: microservicesnet
+
 

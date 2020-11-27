@@ -1,12 +1,10 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MediatR;
 using MicroserviceA.Application.DTOs;
 using MicroserviceA.Application.Requests;
-using MicroserviceA.Business;
 
 namespace MicroserviceA.API.Controllers
 {

@@ -25,7 +25,6 @@ namespace MicroserviceB.API
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<SimpleMessageConsumer>();
-                //x.AddConsumer<DashboardFaultConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -36,11 +35,6 @@ namespace MicroserviceB.API
                         receiveEndpointConfiguration.AutoDelete = false;
                         receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context);
                     });
-
-                    //cfg.ReceiveEndpoint("LongProcessEvent_error", e =>
-                    //{
-                    //    e.ConfigureConsumer<DashboardFaultConsumer>(context);
-                    //});
                 });
             });
 
