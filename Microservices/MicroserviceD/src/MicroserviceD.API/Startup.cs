@@ -59,6 +59,8 @@ namespace MicroserviceD.API
                 });
             });
 
+            services.AddOpenApiDocument(cfg => cfg.PostProcess = d => d.Info.Title = "MassTransit Sample");
+
             services.AddMassTransitHostedService();
 
             services.AddControllers();
@@ -71,6 +73,9 @@ namespace MicroserviceD.API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseOpenApi(); // serve OpenAPI/Swagger documents
+            app.UseSwaggerUi3(); // serve Swagger UI
 
             app.UseHttpsRedirection();
 
