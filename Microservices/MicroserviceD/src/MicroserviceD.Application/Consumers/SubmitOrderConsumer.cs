@@ -13,18 +13,23 @@ namespace MicroserviceD.Application.Consumers
             this.logger = logger;
 
         }
+
+        public SubmitOrderConsumer()
+        {
+
+        }
+
         public async Task Consume(ConsumeContext<ISubmitOrder> context)
         {
             if (context.RequestId.HasValue)
             {
                 if (context.Message.Amount > 0)
                 {
-                    await context.Publish<IOrderAccepted>(new
+                    await context.Publish<IOrderAcceptedEvent>(new
                     {
                         context.Message.Amount,
                         context.Message.OrderId,
-                        CreationDateTime = InVar.Timestamp,
-                        Status = "Created"
+                        CreationDateTime = InVar.Timestamp
                     });
 
                     await context.RespondAsync<IOrderAccepted>(new

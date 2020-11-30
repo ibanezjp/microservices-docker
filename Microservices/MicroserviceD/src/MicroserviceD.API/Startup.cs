@@ -41,12 +41,13 @@ namespace MicroserviceD.API
 
             services.AddMassTransit(cfg =>
             {
-                cfg.AddConsumer<SubmitOrderConsumer>();
-                cfg.AddConsumer<OrderValidationConsumer>();
+                cfg.AddConsumer<SubmitOrderConsumer>(typeof(SubmitOrderConsumerDefinition));
+                cfg.AddConsumer<OrderValidationCompletedConsumer>();
+
                 cfg.AddRequestClient<ISubmitOrder>();
                 cfg.AddRequestClient<ICheckOrderState>();
                 
-                cfg.AddSagaStateMachine<OrderStateMachine, OrderState>()
+                cfg.AddSagaStateMachine<OrderStateMachine, OrderState>(typeof(OrderStateMachineDefinition))
                     .RedisRepository(r =>
                     {
                         r.DatabaseConfiguration("redis-server");

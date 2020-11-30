@@ -11,6 +11,13 @@ namespace Microservice.Common.EventBus.Interfaces
         double Amount { get; }
     }
 
+    public interface IOrderAcceptedEvent
+    {
+        Guid OrderId { get; }
+        DateTime CreationDateTime { get; }
+        double Amount { get; }
+    }
+
     public interface IOrderRejected
     {
         Guid OrderId { get; }

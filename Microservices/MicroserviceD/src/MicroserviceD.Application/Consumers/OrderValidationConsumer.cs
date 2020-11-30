@@ -5,10 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroserviceD.Application.Consumers
 {
-    public class OrderValidationConsumer : IConsumer<IOrderValidationCompleted>
+    public class OrderValidationCompletedConsumer : IConsumer<IOrderValidationCompleted>
     {
         private readonly ILogger<IOrderValidationCompleted> logger;
-        public OrderValidationConsumer(ILogger<IOrderValidationCompleted> logger)
+        public OrderValidationCompletedConsumer(ILogger<IOrderValidationCompleted> logger)
         {
             this.logger = logger;
 

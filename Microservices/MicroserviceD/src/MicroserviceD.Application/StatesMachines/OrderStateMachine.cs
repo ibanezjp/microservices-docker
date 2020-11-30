@@ -10,7 +10,7 @@ namespace MicroserviceD.Application.StatesMachines
     {
         public OrderStateMachine()
         {
-            Event(() => OrderAccepted, x => x.CorrelateById(m => m.Message.OrderId));
+            Event(() => OrderAcceptedEvent, x => x.CorrelateById(m => m.Message.OrderId));
 
             Event(() => OrderStateRequested, x =>
             {
@@ -30,7 +30,7 @@ namespace MicroserviceD.Application.StatesMachines
             InstanceState(x => x.CurrentState);
 
             Initially(
-                When(OrderAccepted)
+                When(OrderAcceptedEvent)
                     .Then(context =>
                     {
                         context.Instance.Amount ??= context.Data.Amount;
@@ -44,7 +44,7 @@ namespace MicroserviceD.Application.StatesMachines
                     .TransitionTo(Created));
 
             During(Created,
-                Ignore(OrderAccepted),
+                Ignore(OrderAcceptedEvent),
                 When(OrderValidationApproved)
                     .Then(context =>
                     {
@@ -75,7 +75,7 @@ namespace MicroserviceD.Application.StatesMachines
         public State Approved { get; private set; }
         public State Processing { get; private set; }
 
-        public Event<IOrderAccepted> OrderAccepted { get; set; }
+        public Event<IOrderAcceptedEvent> OrderAcceptedEvent { get; set; }
         public Event<ICheckOrderState> OrderStateRequested { get; set; }
         public Event<IOrderValidationApproved> OrderValidationApproved { get; set; }
         public Event<IOrderValidationRejected> OrderValidationRejected { get; set; }
