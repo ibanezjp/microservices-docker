@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MassTransit;
+using Microservice.Common.EventBus.Interfaces;
 using MicroserviceC.Application.Consumers;
 
 namespace MicroserviceC.API
@@ -22,6 +23,12 @@ namespace MicroserviceC.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediator(x =>
+            {
+                x.AddRequestClient<IRemoteSimpleMessageRequest>();
+                x.AddConsumer<RemoteSimpleMessageConsumer>();
+            });
+
             services.AddMassTransit(x =>
             {
                 x.AddConsumer<SimpleMessageConsumer>();
@@ -33,16 +40,16 @@ namespace MicroserviceC.API
                 {
                     cfg.Host("rabbitmq-server-web");
 
-                    cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue",receiveEndpointConfiguration =>
-                    {
-                        receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context); 
-                        receiveEndpointConfiguration.ConfigureConsumer<FaultSimpleMessageConsumer>(context);
+                    cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue", receiveEndpointConfiguration =>
+                     {
+                         receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context);
+                         receiveEndpointConfiguration.ConfigureConsumer<FaultSimpleMessageConsumer>(context);
 
-                        receiveEndpointConfiguration.AutoDelete = false;
+                         receiveEndpointConfiguration.AutoDelete = false;
 
-                        receiveEndpointConfiguration.UseMessageRetry(x =>
-                            x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
-                    });
+                         receiveEndpointConfiguration.UseMessageRetry(x =>
+                             x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
+                     });
 
                     cfg.ReceiveEndpoint("order-validation", receiveEndpointConfiguration =>
                     {
@@ -57,7 +64,7 @@ namespace MicroserviceC.API
                 });
             });
 
-            services.AddMassTransitHostedService();
+            //services.AddMassTransitHostedService();
 
             services.AddControllers();
         }
