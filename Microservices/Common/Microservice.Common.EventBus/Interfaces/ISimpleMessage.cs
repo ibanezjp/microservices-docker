@@ -7,4 +7,15 @@ namespace Microservice.Common.EventBus.Interfaces
         DateTime CreationDateTime { get; }
         string Message { get; }
     }
+
+    public interface IRemoteSimpleMessageRequest
+    {
+
+    }
+
+    public interface IRemoteSimpleMessageResponse
+    {
+        string Message { get; set; }
+        DateTime CreationDateTime { get; }
+    }
 }

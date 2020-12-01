@@ -27,6 +27,7 @@ namespace MicroserviceC.API
                 x.AddConsumer<SimpleMessageConsumer>();
                 x.AddConsumer<FaultSimpleMessageConsumer>();
                 x.AddConsumer<OrderValidationConsumer>();
+                x.AddConsumer<RemoteSimpleMessageConsumer>();
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
@@ -46,6 +47,11 @@ namespace MicroserviceC.API
                     cfg.ReceiveEndpoint("order-validation", receiveEndpointConfiguration =>
                     {
                         receiveEndpointConfiguration.ConfigureConsumer<OrderValidationConsumer>(context);
+                    });
+
+                    cfg.ReceiveEndpoint("remote-simple-message-microservice-c", receiveEndpointConfiguration =>
+                    {
+                        receiveEndpointConfiguration.ConfigureConsumer<RemoteSimpleMessageConsumer>(context);
                     });
                 });
             });

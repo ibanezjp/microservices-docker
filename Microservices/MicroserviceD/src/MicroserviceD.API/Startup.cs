@@ -46,6 +46,7 @@ namespace MicroserviceD.API
 
                 cfg.AddRequestClient<ISubmitOrder>();
                 cfg.AddRequestClient<ICheckOrderState>();
+                cfg.AddRequestClient<IRemoteSimpleMessageRequest>();
                 
                 cfg.AddSagaStateMachine<OrderStateMachine, OrderState>(typeof(OrderStateMachineDefinition))
                     .RedisRepository(r =>
