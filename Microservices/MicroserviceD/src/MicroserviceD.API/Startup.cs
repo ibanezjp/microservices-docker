@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.Definition;
@@ -16,6 +17,9 @@ using Microservice.Common.EventBus.Interfaces;
 using MicroserviceD.Application.Consumers;
 using MicroserviceD.Application.StatesMachines;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Polly;
+using System.Net.Http;
+using MicroserviceD.API.Middleware;
 
 namespace MicroserviceD.API
 {
@@ -66,8 +70,43 @@ namespace MicroserviceD.API
             services.AddMassTransitHostedService();
 
             services.AddControllers();
+            // Begin Polly
+            IAsyncPolicy<HttpResponseMessage> httpWaitAndRetryPolicy =
+            Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+            .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+            (result, span, retryCount, ctx) => Console.WriteLine($"Retrying({retryCount})...")
+            );
+
+            IAsyncPolicy<HttpResponseMessage> fallbackPolicy =
+                Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+                    .FallbackAsync(FallbackAction, OnFallbackAsync);
+
+            IAsyncPolicy<HttpResponseMessage> wrapOfRetryAndFallback = Policy.WrapAsync(fallbackPolicy, httpWaitAndRetryPolicy);
+
+            services.AddHttpClient("TemperatureService", client =>
+            {
+                client.BaseAddress = new Uri("https://microservicec.api/");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+            }).AddPolicyHandler(wrapOfRetryAndFallback);
+            // End Polly
+        }
+        private Task OnFallbackAsync(DelegateResult<HttpResponseMessage> response, Context context)
+        {
+            Console.WriteLine("About to call the fallback action. This is a good place to do some logging");
+            return Task.CompletedTask;
         }
 
+        private Task<HttpResponseMessage> FallbackAction(DelegateResult<HttpResponseMessage> responseToFailedRequest, Context context, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Fallback action is executing");
+
+            HttpResponseMessage httpResponseMessage = new HttpResponseMessage(responseToFailedRequest.Result.StatusCode)
+            {
+                Content = new StringContent($"The fallback executed, the original error was {responseToFailedRequest.Result.ReasonPhrase}")
+            };
+            return Task.FromResult(httpResponseMessage);
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -84,6 +123,8 @@ namespace MicroserviceD.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseRequestResponseLogging();
 
             app.UseEndpoints(endpoints =>
             {
