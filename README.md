@@ -1,5 +1,7 @@
 # microservices-docker Sample
 
+I started this repo to learn about microservices and docker, them I added MediatR and finally I realized that MassTransit (https://masstransit-project.com/) is a very powerfull library to do distributed architectures. 
+
 Run docker command:
 1) docker network create microservicesnet
 2) docker run -d --hostname rabbitmq-server-web --name rabbitmq-server-web -p 15672:15672 rabbitmq:management
