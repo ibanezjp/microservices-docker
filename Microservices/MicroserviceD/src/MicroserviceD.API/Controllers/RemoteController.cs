@@ -34,5 +34,12 @@ namespace MicroserviceD.API.Controllers
         {
             return Ok();
         }
+
+        [HttpGet]
+        [Route("remotebygprc")]
+        public async Task<IActionResult> GetRemoteByGPRC()
+        {
+            return Ok();
+        }
     }
 }
