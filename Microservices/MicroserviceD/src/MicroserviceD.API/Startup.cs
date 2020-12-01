@@ -51,7 +51,7 @@ namespace MicroserviceD.API
                 cfg.AddRequestClient<ISubmitOrder>();
                 cfg.AddRequestClient<ICheckOrderState>();
                 cfg.AddRequestClient<IRemoteSimpleMessageRequest>();
-                
+
                 cfg.AddSagaStateMachine<OrderStateMachine, OrderState>(typeof(OrderStateMachineDefinition))
                     .RedisRepository(r =>
                     {
@@ -70,7 +70,9 @@ namespace MicroserviceD.API
             services.AddMassTransitHostedService();
 
             services.AddControllers();
-            // Begin Polly
+
+            #region Http with Polly
+
             IAsyncPolicy<HttpResponseMessage> httpWaitAndRetryPolicy =
             Policy.HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
             .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
@@ -83,13 +85,14 @@ namespace MicroserviceD.API
 
             IAsyncPolicy<HttpResponseMessage> wrapOfRetryAndFallback = Policy.WrapAsync(fallbackPolicy, httpWaitAndRetryPolicy);
 
-            services.AddHttpClient("TemperatureService", client =>
+            services.AddHttpClient("RemoteServiceByHttp", client =>
             {
-                client.BaseAddress = new Uri("https://microservicec.api/");
+                client.BaseAddress = new Uri("http://microservicec.api/");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
             }).AddPolicyHandler(wrapOfRetryAndFallback);
-            // End Polly
+
+            #endregion
         }
         private Task OnFallbackAsync(DelegateResult<HttpResponseMessage> response, Context context)
         {

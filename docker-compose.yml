@@ -42,6 +42,12 @@ services:
     build:
       context: .
       dockerfile: Microservices/MicroserviceD/src/MicroserviceD.API/Dockerfile
+    ports:
+        - 30006:80
+        - 30007:443
+    environment:
+        - "ASPNETCORE_URLS=https://+;http://+"
+    restart: always
 
 networks:
   default:
