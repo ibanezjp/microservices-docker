@@ -52,6 +52,7 @@ namespace MicroserviceC.API
                     cfg.ReceiveEndpoint("remote-simple-message-microservice-c", receiveEndpointConfiguration =>
                     {
                         receiveEndpointConfiguration.ConfigureConsumer<RemoteSimpleMessageConsumer>(context);
+                        receiveEndpointConfiguration.Durable = false;
                     });
                 });
             });
