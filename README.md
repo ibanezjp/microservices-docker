@@ -8,3 +8,10 @@ Run docker command:
 5) docker network connect microservicesnet rabbitmq-server-web
 6) docker run --name redis-server -d redis:alpine redis-server --appendonly yes
 7) docker network connect microservicesnet redis-server
+8) docker run --name apache-server -d httpd
+9) docker network connect microservicesnet apache-server
+
+To run benchmarks:
+1) From Apache CLI => ab -c 5 -n 1000 -m GET https://microserviced.api/remote (MassTransit and RabbitMQ)
+2) From Apache CLI => ab -c 5 -n 1000 -m GET https://microserviced.api/remote/http (HttpClientFactory + Polly)
+
