@@ -40,31 +40,41 @@ namespace MicroserviceC.API
                 {
                     cfg.Host("rabbitmq-server-web");
 
-                    cfg.ReceiveEndpoint("MicroserviceC_SimpleMessage_Queue", receiveEndpointConfiguration =>
+                    cfg.ReceiveEndpoint(receiveEndpointConfiguration =>
                      {
                          receiveEndpointConfiguration.ConfigureConsumer<SimpleMessageConsumer>(context);
                          receiveEndpointConfiguration.ConfigureConsumer<FaultSimpleMessageConsumer>(context);
 
                          receiveEndpointConfiguration.AutoDelete = false;
+                         receiveEndpointConfiguration.Durable = true;
 
                          receiveEndpointConfiguration.UseMessageRetry(x =>
                              x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
                      });
 
-                    cfg.ReceiveEndpoint("order-validation", receiveEndpointConfiguration =>
+                    cfg.ReceiveEndpoint(receiveEndpointConfiguration =>
                     {
                         receiveEndpointConfiguration.ConfigureConsumer<OrderValidationConsumer>(context);
+
+                        receiveEndpointConfiguration.AutoDelete = false;
+                        receiveEndpointConfiguration.Durable = true;
+
                     });
 
-                    cfg.ReceiveEndpoint("remote-simple-message-microservice-c", receiveEndpointConfiguration =>
+                    cfg.ReceiveEndpoint(receiveEndpointConfiguration =>
                     {
                         receiveEndpointConfiguration.ConfigureConsumer<RemoteSimpleMessageConsumer>(context);
-                        receiveEndpointConfiguration.UseMessageRetry( configurator => configurator.Immediate(5));
+
+                        receiveEndpointConfiguration.AutoDelete = false;
+                        receiveEndpointConfiguration.Durable = true;
+
+                        receiveEndpointConfiguration.UseMessageRetry(x =>
+                            x.Incremental(5, TimeSpan.Zero, TimeSpan.FromSeconds(1)));
                     });
                 });
             });
 
-            //services.AddMassTransitHostedService();
+            services.AddMassTransitHostedService();
 
             services.AddControllers();
         }

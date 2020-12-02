@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MassTransit;
 using Microservice.Common.EventBus.Interfaces;
 using Microsoft.AspNetCore.Mvc;

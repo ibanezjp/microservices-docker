@@ -10,7 +10,6 @@ namespace Microservice.Common.EventBus.Interfaces
 
     public interface IRemoteSimpleMessageRequest
     {
-
     }
 
     public interface IRemoteSimpleMessageResponse
