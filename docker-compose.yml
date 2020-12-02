@@ -6,48 +6,24 @@ services:
     build:
       context: .
       dockerfile: Microservices/MicroserviceA/src/MicroserviceA.API/Dockerfile
-    ports:
-        - 30000:80
-        - 30001:443
-    environment:
-        - "ASPNETCORE_URLS=https://+;http://+"
-    restart: always
 
   microserviceb.api:
     image: ${DOCKER_REGISTRY-}microservicebapi
     build:
       context: .
       dockerfile: Microservices/MicroserviceB/src/MicroserviceB.API/Dockerfile
-    ports:
-        - 30002:80
-        - 30003:443
-    environment:
-        - "ASPNETCORE_URLS=https://+;http://+"
-    restart: always
 
   microservicec.api:
     image: ${DOCKER_REGISTRY-}microservicecapi
     build:
       context: .
       dockerfile: Microservices/MicroserviceC/src/MicroserviceC.API/Dockerfile
-    ports:
-        - 30004:80
-        - 30005:443
-    environment:
-        - "ASPNETCORE_URLS=https://+;http://+"
-    restart: always
 
   microserviced.api:
     image: ${DOCKER_REGISTRY-}microservicedapi
     build:
       context: .
       dockerfile: Microservices/MicroserviceD/src/MicroserviceD.API/Dockerfile
-    ports:
-        - 30006:80
-        - 30007:443
-    environment:
-        - "ASPNETCORE_URLS=https://+;http://+"
-    restart: always
 
 networks:
   default:
